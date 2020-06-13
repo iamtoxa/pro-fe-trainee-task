@@ -9,7 +9,7 @@ import RepoSearch from '../components/RepoSearch'
 
 const fetcher = (url) => fetch(url, {
   headers: {
-    "Authorization": "token 2d03cfe4a6f361dd7e68ba988d39b7d3cc2688da"
+    "Authorization": "token 171657ead14f6fd948cb1d105f12ea40019899f7"
   }
 }).then(async (res) => {return {res: await res.json(), response: res}})
 
@@ -41,9 +41,8 @@ function Page(props) {
         <RepoSearch/>
 
         <div className='reposList' style={{marginBottom: 20}}>
-          {data && data.res.items.map(el=>{
-            return <RepoCard className='hovered' key={el.id} item={el}/>
-          })}
+          {data && data.res && data.res.items.map(el=>
+          <RepoCard className='hovered' key={el.id} item={el}/>)}
         </div>
 
 

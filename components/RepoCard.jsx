@@ -5,7 +5,7 @@ import { BsStar, BsCalendar } from "react-icons/bs";
 
 const fetcher = (url) => fetch(url, {
   headers: {
-    "Authorization": "token 2d03cfe4a6f361dd7e68ba988d39b7d3cc2688da"
+    "Authorization": "token 171657ead14f6fd948cb1d105f12ea40019899f7"
   }
 }).then(async (res) => {return {res: await res.json(), response: res}})
 
