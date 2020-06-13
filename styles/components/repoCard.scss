@@ -1,0 +1,107 @@
+.repoCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  position: relative;
+
+  box-shadow: 0 2px 6px #00000050;
+  min-height: 50px;
+  background: map-get($map: $theme-colors, $key: "white");
+
+  transition: all 0.2s ease;
+  overflow: hidden;
+  
+  border-radius: 5px;
+  padding: 16px;
+
+  &.hovered:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 6px 4px #00000050;
+  }
+
+  .info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: map-get($map: $theme-colors, $key: "gray-2");
+    > *:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+
+  .languages{
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    margin: 10px 0;
+    flex-wrap: wrap;
+    li{
+      margin: 0;
+      padding: 0;
+    }
+    li:not(:last-child){
+      margin-right: 8px;
+    }
+    li:not(.main){
+      color: map-get($map: $theme-colors, $key: "gray-3");
+    }
+    li.main{
+      font-weight: 600;
+    }
+    span{
+      margin-right: 10px;
+    }
+  }
+
+  .repoCard__footer {
+    background: map-get($map: $theme-colors, $key: "gray-6");
+    margin: 16px -16px -16px -16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    > *:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+
+  .link {
+    color: map-get($map: $theme-colors, $key: "gray-3");
+  }
+
+  .description{
+    margin-bottom: 0;
+  }
+
+
+  
+  .title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    background: map-get($map: $theme-colors, $key: "gray-6");
+    margin: -16px -16px 16px -16px;
+    padding: 16px;
+
+    flex-wrap: wrap-reverse;
+  }
+
+  .author{
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+
+    img{
+      position: relative;
+      right: 0;
+      bottom: 0;
+      height: 60px;
+      margin-left: 10px;
+      display: block;
+      border-radius: 5px;
+    }
+  }
+}

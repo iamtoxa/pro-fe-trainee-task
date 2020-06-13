@@ -1,0 +1,9 @@
+.page__index{
+  .reposList {
+    display: block;
+  
+    > *:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  } 
+}

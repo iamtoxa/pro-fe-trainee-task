@@ -1,0 +1,16 @@
+.repoSearch{
+    display: flex;
+    margin-bottom: 20px;
+    button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 48px;
+        width: 48px;
+    }
+    input{
+        font-size: 18pt;
+        flex: 1;
+        margin-right: 10px;
+    }
+}

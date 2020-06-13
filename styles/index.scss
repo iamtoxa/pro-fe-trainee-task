@@ -1,0 +1,117 @@
+$theme-colors: (
+    "gray-1": #333333,
+    "gray-2": #4f4f4f,
+    "gray-3": #828282,
+    "gray-4": #bdbdbd,
+    "gray-5": #e0e0e0,
+    "gray-6": #f2f2f2,
+    "primary": #2d9cdb,
+    "secondary": #e97979,
+    "light": #ebedf1,
+    "dark": #373d4a,
+    "black": #292b30,
+    "white": #ffffff,
+);
+
+@import "./components/buttons";
+@import "./components/repoCard";
+@import "./components/paginator";
+@import "./components/repoSearch";
+@import "./pages/index";
+@import "./pages/repo";
+
+@for $i from 1 through 6 {
+  h#{7 - $i} {
+      margin: 0;
+      padding: 0;
+  }
+}
+
+*{
+  box-shadow: border-box;
+}
+
+body, html{
+  padding: 0;
+  margin: 0;
+  background: map-get($map: $theme-colors, $key: "light");
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.container {
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  height: 80px;
+  background: map-get($map: $theme-colors, $key: "white");
+  color: map-get($map: $theme-colors, $key: "black");
+  margin-bottom: 20px;
+  box-shadow: 0 2px 2px rgba($color: #000000, $alpha: 0.3);
+}
+
+main{
+  flex: 1;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  height: 50px;
+  background: map-get($map: $theme-colors, $key: "dark");
+  color: map-get($map: $theme-colors, $key: "light");
+
+  box-shadow: inset 0 2px 2px rgba($color: #000000, $alpha: 0.3);
+  a{
+    color: map-get($map: $theme-colors, $key: "white");
+  }
+}
+
+a{
+  color: map-get($map: $theme-colors, $key: "black");
+}
+
+@media screen and (min-width:1460px){
+  main{
+    max-width: 1440px;
+  }
+}
+
+@media screen and (max-width:1460px){
+  main{
+    max-width: 960px;
+  }
+}
+
+@media screen and (max-width:980px){
+  main{
+    max-width: 640px;
+  }
+}
+
+@media screen and (max-width:660px){
+  main{
+    max-width: 480px;
+  }
+}
+
+#__next-prerender-indicator {
+  display: none;
+}

@@ -1,0 +1,41 @@
+.page__repo {
+  .contributors {
+    display: block;
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid map-get($map: $theme-colors, $key: "gray-3");
+    li {
+      margin: 0;
+      padding: 0;
+      background: map-get($map: $theme-colors, $key: "white");
+      display: flex;
+      align-items: center;
+      padding: 0;
+
+      a{
+        display: block;
+        width: 100%;
+        padding: 10px 16px;
+      }
+
+      img{
+        height: 64px;
+      }
+    }
+
+    .header{
+      background: map-get($map: $theme-colors, $key: "gray-6");
+      padding: 10px 16px;
+    }
+
+    li:not(:last-child){
+      border-bottom: 1px solid map-get($map: $theme-colors, $key: "gray-3");
+    }
+  }
+}
