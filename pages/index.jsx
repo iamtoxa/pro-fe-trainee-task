@@ -7,13 +7,14 @@ import RepoCard from '../components/RepoCard'
 import Paginator from '../components/Paginator'
 import RepoSearch from '../components/RepoSearch'
 
-const fetcher = (url) => fetch(url, {
-  headers: {
-    "Authorization": "token 171657ead14f6fd948cb1d105f12ea40019899f7"
-  }
-}).then(async (res) => {return {res: await res.json(), response: res}})
-
 function Page(props) {
+  const fetcher = (url) => fetch(url, {
+    headers: {
+      "Authorization": `token ${props.token}`
+    }
+  }).then(async (res) => {return {res: await res.json(), response: res}})
+
+
   const router = useRouter();
   const currentPage = Number(router.query.page) || 1
   const perPage = 10;
@@ -42,7 +43,7 @@ function Page(props) {
 
         <div className='reposList' style={{marginBottom: 20}}>
           {data && data.res && data.res.items.map(el=>
-          <RepoCard className='hovered' key={el.id} item={el}/>)}
+          <RepoCard className='hovered' key={el.id} item={el} token={props.token}/>)}
         </div>
 
 
@@ -58,5 +59,30 @@ function Page(props) {
     </div>
   )
 }
+
+export const getServerSideProps = async ({query}) => {
+
+  var fs = require('fs');
+  var jwt = require('jsonwebtoken');
+  var privateKey = fs.readFileSync('./cert/informal-repos-list.2020-06-14.private-key.pem');
+
+  var payload = {
+    iat: Math.round(new Date().getTime() / 1000),
+    exp: Math.round(new Date().getTime() / 1000) + (60 * 10 - 1),
+    iss: 68614
+  }
+
+  var jwtToken = jwt.sign(payload, privateKey, { algorithm: 'RS256' });
+
+  var token = await fetch("https://api.github.com/app/installations/9744407/access_tokens", {
+    headers: {
+      "Authorization": `Bearer ${jwtToken}`,
+      "Accept": "application/vnd.github.machine-man-preview+json"
+    },
+    method: "POST"
+  }).then((res) => res.json()).then((data) => { console.log(data.token); return data.token; })
+
+  return { props: {token} };
+};
 
 export default Page;

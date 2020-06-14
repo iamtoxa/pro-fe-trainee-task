@@ -6,21 +6,23 @@ import { BsStar, BsCalendar } from "react-icons/bs";
 import { IoIosArrowBack } from "react-icons/io";
 import Link from 'next/link'
 
-const fetcher = (url) => fetch(url, {
-  headers: {
-    "Authorization": "token 171657ead14f6fd948cb1d105f12ea40019899f7"
-  }
-}).then((res) => res.json())
+
 
 function Page(props) {
   const router = useRouter();
 
+  const fetcher = (url) => fetch(url, {
+    headers: {
+      "Authorization": `Bearer ${props.token}`
+    }
+  }).then((res) => res.json())
+
   const { data: repo } = useSwr(`https://api.github.com/repos/${props.owner}/${props.repo}`, fetcher)
   const { data: commits } = useSwr(() => repo.commits_url.slice(0, -6), fetcher)
   const { data: languages } = useSwr(() => repo.languages_url, fetcher)
-  const { data: contributors } = useSwr(() => repo.contributors_url+"?limit=3", fetcher)
+  const { data: contributors } = useSwr(() => repo.contributors_url + "?limit=3", fetcher)
 
-  if(contributors){
+  if (contributors) {
     contributors.length = 10;
   }
 
@@ -32,11 +34,9 @@ function Page(props) {
       </Head>
 
       <header>
-        <Link href="/">
-          <div className='homeBtn'>
-            <IoIosArrowBack size={32}/>
-          </div>
-        </Link>
+        <div className='homeBtn' onClick={()=>{router.back()}}>
+          <IoIosArrowBack size={32} />
+        </div>
         <h1>
           Github Dashboard
         </h1>
@@ -67,8 +67,8 @@ function Page(props) {
 
             <ul className="languages">
               <span>Используемые языки: </span>
-              {languages && Object.entries(languages).map(([lang,amount], index)=>
-                <li key={index} title={amount} className={lang == repo.language?"main":""}>{lang}</li>
+              {languages && Object.entries(languages).map(([lang, amount], index) =>
+                <li key={index} title={amount} className={lang == repo.language ? "main" : ""}>{lang}</li>
               )}
             </ul>
 
@@ -84,16 +84,16 @@ function Page(props) {
             </div>
           </div>
 
-          
+
           <ul className='contributors'>
             <li className='header'>10 наиболее активных контрибьютеров</li>
-            {contributors && 
-            contributors.map((contributor)=>
+            {contributors &&
+              contributors.map((contributor) =>
                 <li key={contributor.id}>
-                  <img src={contributor.avatar_url} alt=""/>
+                  <img src={contributor.avatar_url} alt="" />
                   <a href={contributor.html_url} target='_blank'>{contributor.login} ({contributor.contributions} действий)</a>
                 </li>
-            )}
+              )}
           </ul>
         </>)}
       </main>
@@ -107,9 +107,30 @@ function Page(props) {
   )
 }
 
-Page.getInitialProps = async ({ query }) => {
+export const getServerSideProps = async ({query}) => {
   const { owner, repo } = query;
-  return { owner, repo };
+
+  var fs = require('fs');
+  var jwt = require('jsonwebtoken');
+  var privateKey = fs.readFileSync('./cert/informal-repos-list.2020-06-14.private-key.pem');
+
+  var payload = {
+    iat: Math.round(new Date().getTime() / 1000),
+    exp: Math.round(new Date().getTime() / 1000) + (60 * 10 - 1),
+    iss: 68614
+  }
+
+  var jwtToken = jwt.sign(payload, privateKey, { algorithm: 'RS256' });
+
+  var token = await fetch("https://api.github.com/app/installations/9744407/access_tokens", {
+    headers: {
+      "Authorization": `Bearer ${jwtToken}`,
+      "Accept": "application/vnd.github.machine-man-preview+json"
+    },
+    method: "POST"
+  }).then((res) => res.json()).then((data) => { console.log(data.token); return data.token; })
+
+  return { props: {owner, repo, token} };
 };
 
 

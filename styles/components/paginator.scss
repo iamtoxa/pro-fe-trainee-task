@@ -7,4 +7,9 @@
     >*:not(:last-child){
         margin-right: 5px;
     }
+
+    .active{
+        background: map-get($map: $theme-colors, $key: "primary");
+        color: #ffffff;
+    }
 }

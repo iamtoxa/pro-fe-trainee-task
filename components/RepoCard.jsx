@@ -1,27 +1,24 @@
 import Link from 'next/link'
 import useSwr from 'swr'
-
 import { BsStar, BsCalendar } from "react-icons/bs";
 
-const fetcher = (url) => fetch(url, {
-  headers: {
-    "Authorization": "token 171657ead14f6fd948cb1d105f12ea40019899f7"
-  }
-}).then(async (res) => {return {res: await res.json(), response: res}})
-
 const component = (props) => {
+  const fetcher = (url) => fetch(url, {
+    headers: {
+      "Authorization": `token ${props.token}`,
+    }
+  }).then(async (res) => { return { res: await res.json(), response: res } })
+
   const { item } = props;
-
-  var { data } = useSwr(item.commits_url.slice(0,-6), fetcher)
-
+  var { data } = useSwr(item.commits_url.slice(0, -6), fetcher)
 
   return (
     <div className={`repoCard ${props.className}`}>
 
       <Link href='/repo/[owner]/[repo]' as={`/repo/${item.owner.login}/${item.name}`}><a><h2 className="title">{item.full_name}</h2></a></Link>
       <div className="info">
-        <div title='Количество звёзд' className="stars"><BsStar/> {item.stargazers_count}</div>
-        {data && data.res && data.res[0] && <div title='Последний коммит' className="last_commit"><BsCalendar/> {new Date(Date.parse(data.res[0].commit.committer.date)).toLocaleDateString()}</div>}
+        <div title='Количество звёзд' className="stars"><BsStar /> {item.stargazers_count}</div>
+        {data && data.res && data.res[0] && <div title='Последний коммит' className="last_commit"><BsCalendar /> {new Date(Date.parse(data.res[0].commit.committer.date)).toLocaleDateString()}</div>}
       </div>
       <div className="link">{item.html_url.slice(8)}</div>
 

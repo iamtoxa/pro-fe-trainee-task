@@ -23,17 +23,17 @@ const component = (props) => {
   return (
     <div className='paginator'>
       {!pages.includes(1) && <Link replace href={{ pathname: '/', query: { ...router.query, page: 1 } }}>
-        <button>{'<'}</button>
+        <button className={router.query.page == 1 ?"active":""}>{'<'}</button>
       </Link>}
 
       {pages.map(page=>{
         return <Link key={page} replace href={{ pathname: '/', query: { ...router.query, page: page } }}>
-          <button>{page}</button>
+          <button className={router.query.page == page ?"active":""}>{page}</button>
         </Link>
       })}
 
       {!pages.includes(maxPage) && <Link replace href={{ pathname: '/', query: { ...router.query, page: maxPage } }}>
-        <button>{'>'}</button>
+        <button className={router.query.page == maxPage ?"active":""}>{'>'}</button>
       </Link>}
     </div>
   )
